@@ -28,6 +28,10 @@ services:
     depends_on:
       - web
 volumes:
-  static_value:
   media_value:
   database_value:
+  - type: volume
+    source: static_value
+    target: /app/static
+    volume:
+    nocopy: false
