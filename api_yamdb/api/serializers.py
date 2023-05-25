@@ -1,10 +1,12 @@
+import re
+
+from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 from rest_framework.validators import UniqueValidator
-from reviews.models import Comment, Review, User, Genre, Title, Category
-from django.db.models import Avg
+from reviews.models import Category, Comment, Genre, Review, Title, User
+
 from .exceptions import UsernameValueException
-import re
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

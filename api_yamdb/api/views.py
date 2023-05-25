@@ -1,34 +1,22 @@
+from api.filters import TitleFilter
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status, filters, mixins
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.pagination import PageNumberPagination
-from api.filters import TitleFilter
+from reviews.models import Category, Genre, Review, Title, User
 
-from reviews.models import Review, Title, User, Genre, Category
-from .serializers import (
-    CommentSerializer,
-    ReviewSerializer,
-    RegistrationSerializer,
-    TokenSerializer,
-    UserSerializer,
-    UserProfileEditSerializer,
-    TitleSerializerCreate,
-    TitleSerializerRead,
-    CategorySerializer,
-    GenreSerializer,
-)
-
-from .permissions import (
-    AdminOrSuperuser,
-    ReviewsPermission,
-    TitlePermission,
-)
+from .permissions import AdminOrSuperuser, ReviewsPermission, TitlePermission
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, RegistrationSerializer,
+                          ReviewSerializer, TitleSerializerCreate,
+                          TitleSerializerRead, TokenSerializer,
+                          UserProfileEditSerializer, UserSerializer)
 from .utils import confirmation_code_send
 
 
@@ -104,6 +92,7 @@ class UserViewSet(viewsets.ModelViewSet):
             user = request.user
             serializer = self.get_serializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        return None
 
     @profile.mapping.patch
     def edit_profile(self, request):
@@ -118,6 +107,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        return None
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
