@@ -25,10 +25,6 @@ jobs:
     - name: Pytest
       run: |
         pytest
-    - name: collectstatic
-      run: |
-        cd api_yamdb/
-        python manage.py collectstatic
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
@@ -71,6 +67,10 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker-compose up -d
+    - name: collectstatic
+      run: |
+        cd api_yamdb/
+        python manage.py collectstatic
   send_message:
     runs-on: ubuntu-latest
     needs: deploy
