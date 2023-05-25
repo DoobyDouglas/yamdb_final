@@ -11,7 +11,7 @@ services:
     image: doobydouglas/api_yamdb:v1
     restart: always
     volumes:
-      - static_value:/app/static/
+      - ./web/static/:/app/static/
       - media_value:/app/media/
     depends_on:
       - db
@@ -30,8 +30,3 @@ services:
 volumes:
   media_value:
   database_value:
-  - type: volume
-    source: static_value
-    target: /app/static/
-    volume:
-    nocopy: false
